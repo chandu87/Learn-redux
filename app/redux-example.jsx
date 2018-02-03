@@ -2,28 +2,12 @@ var Redux = require('redux');
 
 console.log('start Learning redux');
 
-//pure function
-function add(a,b){
-  return a+b;
-}
-console.log(2,3);
+var reducer=(state = {name :'anonymous'},action)=>{
+  return state;
+};
 
-var a=3;
-function add(b){
-  return a+b;
-}
+var store = Redux.createStore(reducer);
 
-function changeProp(obj){
-  return {
-    ...obj,
-    name:"sdfds"
-  };
-// obj.name='jimbra';
-// return obj;
+var currentState = store.getState();
 
-}
-var startValue= {name:"SASFA",age:23};
-
-var res = changeProp(startValue);
-console.log(res);
-console.log(startValue);
+console.log('currentState : ',currentState);
