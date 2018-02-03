@@ -8,8 +8,20 @@ var stateDefault= {
   todos:[]
 };
 var reducer = (state=stateDefault,action)=>{
- return state;
+ switch(action.type){
+   case "SEARCHTEXT":
+   return {...state,searchText:action.searchText};
+
+   default:
+   return state;
+ }
 };
 var store = redux.createStore(reducer);
 
 console.log('currentState',store.getState());
+
+store.dispatch({
+  type:"SEARCHTEXT",
+  searchText:"jadasda"
+});
+console.log(store.getState());
