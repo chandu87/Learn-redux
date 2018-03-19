@@ -8,10 +8,10 @@ $(document).foundation();
 //App CSS adding custom styles
 require('style!css!sass!applicationStyles')
 
-ReactDOM.render(
-					<p>BiolerPlate 3</p>,
-					document.getElementById('app')
-				);
+// ReactDOM.render(
+// 					<p>BiolerPlate 3</p>,
+// 					document.getElementById('app')
+// 				);
 
-// require('./redux-example.jsx');
+ // require('./redux-example.jsx');
 require('./redux-todo-example.jsx');
