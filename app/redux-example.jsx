@@ -20,7 +20,13 @@ var reducer=(state = stateDefault,action)=>{
     return{...state,
           movies:[...state.movies,{id:movieId++,title:action.title,gener:action.gener}]
         };
-
+    case "REMOVE_HOBBY":
+    return{...state,hobbies:state.hobbies.filter((hobby)=>hobby.id!==action.id)
+        };
+    case "REMOVE_MOVIE":
+    return{...state,
+      movies:state.movies.filter((movie)=>movie.id!==action.id)
+    };
     default:
     return state;
   }
@@ -62,4 +68,12 @@ store.dispatch({
   type:"ADD_MOVIE",
   title:"Game Of thrones",
   gener:"Fiction"
+});
+store.dispatch({
+  type:"REMOVE_MOVIE",
+  id:1
+});
+store.dispatch({
+  type:"REMOVE_HOBBY",
+  id:1
 });
