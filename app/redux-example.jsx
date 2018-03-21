@@ -8,29 +8,67 @@ var stateDefault = {
     };
 var hobbyId=1;
 var movieId=1;
-var reducer=(state = stateDefault,action)=>{
-  switch(action.type){
-    case "CHANGE_NAME":
-    return{...state, name:action.name};
-    case "ADD_HOBBY":
-    return{...state,
-          hobbies:[...state.hobbies,{ id: hobbyId++, hobby:action.hobby}]
-        };
-    case "ADD_MOVIE":
-    return{...state,
-          movies:[...state.movies,{id:movieId++,title:action.title,gener:action.gener}]
-        };
-    case "REMOVE_HOBBY":
-    return{...state,hobbies:state.hobbies.filter((hobby)=>hobby.id!==action.id)
-        };
-    case "REMOVE_MOVIE":
-    return{...state,
-      movies:state.movies.filter((movie)=>movie.id!==action.id)
-    };
+// var oldreducer=(state = stateDefault,action)=>{
+//   switch(action.type){
+//     case "CHANGE_NAME":
+//     return{...state, name:action.name};
+//     case "ADD_HOBBY":
+//     return{...state,
+//           hobbies:[...state.hobbies,{ id: hobbyId++, hobby:action.hobby}]
+//         };
+//     case "ADD_MOVIE":
+//     return{...state,
+//           movies:[...state.movies,{id:movieId++,title:action.title,gener:action.gener}]
+//         };
+//     case "REMOVE_HOBBY":
+//     return{...state,hobbies:state.hobbies.filter((hobby)=>hobby.id!==action.id)
+//         };
+//     case "REMOVE_MOVIE":
+//     return{...state,
+//       movies:state.movies.filter((movie)=>movie.id!==action.id)
+//     };
+//     default:
+//     return state;
+//   }
+// };
+var nameReducer=(state='anonymous',action)=>{
+  switch (action.type) {
+    case 'CHANGE_NAME':
+      return action.name;
+    default:
+    return state;
+
+  }
+};
+var hobbieReducer=(state=[],action)=>{
+  switch (action.type) {
+    case 'ADD_HOBBY':
+      return [...state,
+          {id:hobbyId++,hobby:action.hobby}];
+    case 'REMOVE_HOBBY':
+      return state.filter((hobby)=>action.id!==hobby.id);
     default:
     return state;
   }
 };
+var movieReducer=(state=[],action)=>{
+  switch (action.type) {
+    case 'ADD_MOVIE':
+      return[...state,{id:movieId++,title:action.title,gener:action.gener}];
+    case 'REMOVE_MOVIE':
+      return state.filter((movie)=>action.id!==movie.id);
+
+      default:
+      return state;
+
+  }
+};
+
+var reducer=Redux.combineReducers({
+  name:nameReducer,
+  hobbies:hobbieReducer,
+  movies:movieReducer
+});
 
 var store = Redux.createStore(reducer,Redux.compose(
   window.devToolsExtension ? window.devToolsExtension() : f => f
