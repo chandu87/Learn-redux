@@ -1,4 +1,5 @@
 var Redux = require('redux');
+var axios=require('axios');
 
 console.log('start Learning redux');
 
@@ -74,12 +75,53 @@ var removeMovie=(id)=>{
   };
 };
 
+//Map reducer and action generators
+var mapReducer = (state={isFetching:false,url:undefined},action)=>{
+  switch(action.type){
+    case 'START_LOCATION_FETCH':
+    return{
+      isFetching:true,
+      url:undefined
+    }
+    case 'COMPLETE_LOCATION_FETCH':
+    return{
+      isFetching: false,
+      url: action.url
+    }
+    default:
+    return state;
+  }
+};
+
+var startLocationFetch =()=>{
+  return {
+      type: 'START_LOCATION_FETCH'
+  }
+};
+var completeLocationFetch=(url)=>{
+  return{
+    type:'COMPLETE_LOCATION_FETCH',
+    url
+  }
+};
+
+var fetchLocation=()=>{
+  store.dispatch(startLocationFetch());
+
+  axios.get('http://ipinfo.io').then(function(res){
+    var loc= res.data.loc;
+    var baseUrl ='http://maps.google.com?q=';
+
+    store.dispatch(completeLocationFetch(baseUrl+loc));
+  });
+};
 
 //Reducer combiner
 var reducer=Redux.combineReducers({
   name:nameReducer,
   hobbies:hobbieReducer,
-  movies:movieReducer
+  movies:movieReducer,
+  map:mapReducer
 });
 
 
@@ -91,19 +133,26 @@ var store = Redux.createStore(reducer,Redux.compose(
 //subscribe to changes
 var unsubscribe=store.subscribe(()=>{
   var state= store.getState();
-   document.getElementById('app').innerHTML=state.name;
+//   document.getElementById('app').innerHTML=state.name;
    console.log("state is",state);
+
+   if(state.map.isFetching){
+     document.getElementById('app').innerHTML="Loading";
+   }
+   else if(state.map.url){
+     document.getElementById('app').innerHTML='<a href="' + state.map.url + '" target="_blank">View your Location</a>';
+   }
 });
 //unsubscribe();
 
 var currentstate= store.getState();
 console.log("current state is",currentstate);
-
+fetchLocation();
 //dispatching items to store
-store.dispatch(changeName('jhon'));
-store.dispatch(addHobby("Swimming"));
-store.dispatch(changeName('Rams'));
-store.dispatch(addMovie('Inception','thriller'));
-store.dispatch(addMovie('Game Of thrones','Fiction'));
-store.dispatch(removeMovie(1));
-store.dispatch(removeHobby(1));
+// store.dispatch(changeName('jhon'));
+// store.dispatch(addHobby("Swimming"));
+// store.dispatch(changeName('Rams'));
+// store.dispatch(addMovie('Inception','thriller'));
+// store.dispatch(addMovie('Game Of thrones','Fiction'));
+// store.dispatch(removeMovie(1));
+// store.dispatch(removeHobby(1));
