@@ -1,3 +1,5 @@
+var axios=require('axios');
+
 export var changeName= (name)=>{
   return {
     type:'CHANGE_NAME',
@@ -46,12 +48,15 @@ export var completeLocationFetch=(url)=>{
 };
 
 export var fetchLocation=()=>{
-  store.dispatch(startLocationFetch());
 
-  axios.get('http://ipinfo.io').then(function(res){
-    var loc= res.data.loc;
-    var baseUrl ='http://maps.google.com?q=';
+  return (dispatch,getState)=>{
+    dispatch(startLocationFetch());
 
-    store.dispatch(completeLocationFetch(baseUrl+loc));
-  });
+    axios.get('http://ipinfo.io').then(function(res){
+      var loc= res.data.loc;
+      var baseUrl ='http://maps.google.com?q=';
+
+      dispatch(completeLocationFetch(baseUrl+loc));
+    });
+  };
 };

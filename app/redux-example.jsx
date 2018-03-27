@@ -1,5 +1,4 @@
 var Redux = require('redux');
-var axios=require('axios');
 
 console.log('start Learning redux');
 
@@ -23,7 +22,7 @@ var unsubscribe=store.subscribe(()=>{
 
 var currentstate= store.getState();
 console.log("current state is",currentstate);
-fetchLocation();
+store.dispatch(actions.fetchLocation());
 //dispatching items to store
 // store.dispatch(changeName('jhon'));
 // store.dispatch(addHobby("Swimming"));
